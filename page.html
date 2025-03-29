@@ -1,0 +1,85 @@
+// Full updated code integrating drone animation with existing functionality
+
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+
+// Scene setup
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 5, 10);
+
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Lighting
+const light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(5, 5, 5).normalize();
+scene.add(light);
+
+// Ground
+const groundGeometry = new THREE.PlaneGeometry(20, 20);
+const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x808080 });
+const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+ground.rotation.x = -Math.PI / 2;
+scene.add(ground);
+
+// Drone body
+const droneGeometry = new THREE.BoxGeometry(1, 0.5, 1);
+const droneMaterial = new THREE.MeshStandardMaterial({ color: 0x5555ff });
+const drone = new THREE.Mesh(droneGeometry, droneMaterial);
+drone.position.y = 3;
+scene.add(drone);
+
+// Drone propellers
+const propellerGeometry = new THREE.CylinderGeometry(0.1, 0.1, 0.05, 32);
+const propellerMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
+
+const propellers = [];
+const propellerPositions = [
+    [0.5, 0.3, 0.5],
+    [-0.5, 0.3, 0.5],
+    [0.5, 0.3, -0.5],
+    [-0.5, 0.3, -0.5]
+];
+
+propellerPositions.forEach(pos => {
+    const propeller = new THREE.Mesh(propellerGeometry, propellerMaterial);
+    propeller.rotation.x = Math.PI / 2;
+    propeller.position.set(pos[0], pos[1], pos[2]);
+    drone.add(propeller);
+    propellers.push(propeller);
+});
+
+// Orbit Controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+// Animation
+let droneDirection = 1;
+function animate() {
+    requestAnimationFrame(animate);
+    
+    // Drone vertical movement
+    drone.position.y += 0.02 * droneDirection;
+    if (drone.position.y > 4 || drone.position.y < 2) {
+        droneDirection *= -1;
+    }
+    
+    // Propeller rotation
+    propellers.forEach(propeller => {
+        propeller.rotation.z += 0.2;
+    });
+    
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+animate();
+
+// Handle window resize
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});

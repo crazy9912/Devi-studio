@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devi Studio - Creative Media Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            padding: 20px 60px;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ff5e62;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 35px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ff5e62;
+        }
+
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 0 30px;
+            overflow: hidden;
+            background: url('https://images.pexels.com/photos/17793521/pexels-photo-17793521/free-photo-of-ttartisan-lens-on-a-canon-camera.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load') no-repeat center center/cover;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Dark overlay for readability */
+            z-index: 0;
+        }
+
+        #threejs-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            font-weight: 300;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn {
+            padding: 14px 40px;
+            background: #fff;
+            color: #ff5e62;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #ff5e62;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .services {
+            padding: 100px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .services h2, .portfolio h2, .contact h2, .packages h2, .about h2 {
+            font-size: 40px;
+            margin-bottom: 60px;
+            color: #ff5e62;
+            font-weight: 700;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .service-card {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .service-card p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .portfolio {
+            padding: 100px 60px;
+            background: #fff;
+            text-align: center;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.05);
+        }
+
+        .portfolio-item a {
+            display: block;
+            text-decoration: none;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .portfolio-item h3 {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            font-size: 20px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .packages {
+            padding: 100px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+            text-align: center;
+            background: #fff;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .package-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #ddd;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .package-card h3 {
+            font-size: 26px;
+            color: #ff5e62;
+            margin-bottom: 20px;
+        }
+
+        .package-card ul {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .package-card ul li {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .package-card ul li:before {
+            content: "✓";
+            color: #ff5e62;
+            position: absolute;
+            left: 0;
+        }
+
+        .package-card .price {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .contact {
+            padding: 100px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .contact-details {
+            margin-top: 40px;
+        }
+
+        .contact-details p {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .contact-details a {
+            color: #ff5e62;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .about {
+            padding: 100px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .about p {
+            font-size: 18px;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            padding: 50px 60px;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 16px;
+        }
+
+        footer a {
+            color: #ff5e62;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-content h3 {
+            font-size: 28px;
+            color: #ff5e62;
+            margin-bottom: 20px;
+        }
+
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .modal-content input, .modal-content select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .modal-content button {
+            padding: 12px;
+            background: #ff5e62;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background: #e04e52;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #ff5e62;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo">Devi Studio</div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#packages">Packages</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <canvas id="threejs-canvas"></canvas>
+        <div class="hero-content">
+            <h1>Devi Studio</h1>
+            <p>Capturing moments and creating visuals with Wedding Photography, Drone Shots, LED Walls, and Banner Printing.</p>
+            <a href="#" class="btn" id="book-now">Book Now</a>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2>Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Wedding Photography</h3>
+                <p>Immortalize your special day with stunning, high-quality photographs full of emotion.</p>
+            </div>
+            <div class="service-card">
+                <h3>Drone Photography</h3>
+                <p>Capture breathtaking aerial views and cinematic shots with our advanced drone technology.</p>
+            </div>
+            <div class="service-card">
+                <h3>LED Walls</h3>
+                <p>Enhance events with vibrant, dynamic LED wall displays for an unforgettable experience.</p>
+            </div>
+            <div class="service-card">
+                <h3>Banner Printing</h3>
+                <p>High-quality, custom banners for promotions, events, and branding needs.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio" id="portfolio">
+        <h2>Our Portfolio</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <a href="wedding.html">
+                    <img src="https://media.istockphoto.com/id/1127706701/photo/hindi-wedding-ceremony.jpg?s=2048x2048&w=is&k=20&c=ZcunTHjPhyfLaTWRfv1BOwACJn40u1hF67ghAKyBjLc=" alt="Wedding">
+                    <h3>Wedding Shoot</h3>
+                </a>
+            </div>
+            <div class="portfolio-item">
+                <a href="drone.html">
+                    <img src="https://images.pexels.com/photos/1781390/pexels-photo-1781390.png?auto=compress&cs=tinysrgb&w=600" alt="Drone">
+                    <h3>Drone Aerial</h3>
+                </a>
+            </div>
+            <div class="portfolio-item">
+                <a href="led.html">
+                    <img src="https://picsum.photos/400/250?led" alt="LED Wall">
+                    <h3>LED Wall Event</h3>
+                </a>
+            </div>
+            <div class="portfolio-item">
+                <a href="banner.html">
+                    <img src="https://picsum.photos/400/250?banner" alt="Banner">
+                    <h3>Banner Design</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="packages" id="packages">
+        <h2>Our Packages</h2>
+        <div class="packages-grid">
+            <div class="package-card">
+                <h3>Silver</h3>
+                <ul>
+                    <li>2 Cameras (Photo + Video)</li>
+                    <li>50 Sheets Album</li>
+                    <li>3 Hours Video</li>
+                    <li>Demo Album & Video</li>
+                    <li>Delivery in 3 Months</li>
+                    <li>No Pre/Post Wedding</li>
+                </ul>
+                <p class="price">Price: Starts from ₹50,000</p>
+            </div>
+            <div class="package-card">
+                <h3>Gold</h3>
+                <ul>
+                    <li>4 Cameras (Traditional + Candid Photo & Video)</li>
+                    <li>80 Sheets (2 Albums)</li>
+                    <li>3 Hours Traditional Video</li>
+                    <li>20 Mins Candid Video with Pendrive</li>
+                    <li>1 Photo Frame</li>
+                </ul>
+                <p class="price">Price: Starts from ₹1,00,000</p>
+            </div>
+            <div class="package-card">
+                <h3>Diamond</h3>
+                <ul>
+                    <li>Candid + Traditional Photo & Video</li>
+                    <li>4 Albums + 1TB Harddisk + Pendrive</li>
+                    <li>4 Photo Frames</li>
+                    <li>Drone + LED Screen</li>
+                    <li>YouTube Live Video</li>
+                    <li>Pre/Post Wedding Included</li>
+                    <li>4 Reels (Wedding + Pre/Post)</li>
+                </ul>
+                <p class="price">Price: Starts from ₹2,00,000</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2>Contact Us</h2>
+        <div class="contact-details">
+            <p><strong>Email:</strong> <a href="mailto:devistudio024@gmail.com">devistudio024@gmail.com</a></p>
+            <p><strong>Phone:</strong> Subramanyam - <a href="tel:+919912050144">+91 99120 50144</a></p>
+            <p><strong>Address:</strong> Devi Studio, Thallaproddatur, Kadapa District, Andhra Pradesh, India</p>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <h2>About Us</h2>
+        <p>Devi Studio has been delivering exceptional photography and videography services since 1999. With over two decades of experience, we specialize in capturing your precious moments with creativity and professionalism.</p>
+    </section>
+
+    <footer>
+        <p>© 1999 Devi Studio. All Rights Reserved. | <a href="#contact">Contact Us</a></p>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="booking-modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">×</span>
+            <h3>Book Your Service</h3>
+            <form action="https://formspree.io/f/xjkyeylj" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="tel" name="phone" placeholder="Your Phone Number" required>
+                <select name="service" required>
+                    <option value="" disabled selected>Select a Service</option>
+                    <option value="Wedding Photography">Wedding Photography</option>
+                    <option value="Drone Photography">Drone Photography</option>
+                    <option value="LED Walls">LED Walls</option>
+                    <option value="Banner Printing">Banner Printing</option>
+                </select>
+                <input type="hidden" name="_subject" value="New Booking Request">
+                <input type="hidden" name="_next" value="http://localhost:5500/index.html#contact">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script>
+        // Three.js Setup with Drone and Particles
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threejs-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Subtle Particles
+        const particleCount = 50;
+        const particles = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount * 3; i++) {
+            positions[i] = (Math.random() - 0.5) * 1000;
+        }
+        particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const particleMaterial = new THREE.PointsMaterial({
+            color: 0xff5e62,
+            size: 5,
+            transparent: true,
+            opacity: 0.6
+        });
+        const particleSystem = new THREE.Points(particles, particleMaterial);
+        scene.add(particleSystem);
+
+        // Mini 3D Drone Model
+        const droneGroup = new THREE.Group();
+
+        // Drone Body (Cube)
+        const droneBodyGeometry = new THREE.BoxGeometry(10, 5, 15); // Width, Height, Depth
+        const droneBodyMaterial = new THREE.MeshBasicMaterial({ color: 0x808080 }); // Gray color
+        const droneBody = new THREE.Mesh(droneBodyGeometry, droneBodyMaterial);
+
+        // Drone Propellers (4 small cylinders)
+        const propellerGeometry = new THREE.CylinderGeometry(2, 2, 1, 8);
+        const propellerMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 }); // Black color
+
+        const propeller1 = new THREE.Mesh(propellerGeometry, propellerMaterial);
+        propeller1.position.set(6, 3, 6);
+        const propeller2 = new THREE.Mesh(propellerGeometry, propellerMaterial);
+        propeller2.position.set(-6, 3, 6);
+        const propeller3 = new THREE.Mesh(propellerGeometry, propellerMaterial);
+        propeller3.position.set(6, 3, -6);
+        const propeller4 = new THREE.Mesh(propellerGeometry, propellerMaterial);
+        propeller4.position.set(-6, 3, -6);
+
+        // Add components to drone group
+        droneGroup.add(droneBody, propeller1, propeller2, propeller3, propeller4);
+        droneGroup.position.set(50, 50, 0); // Position in top-right corner
+        droneGroup.scale.set(0.5, 0.5, 0.5); // Mini size
+        scene.add(droneGroup);
+
+        camera.position.z = 200;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particleSystem.rotation.y += 0.001;
+            particleSystem.rotation.x += 0.002;
+
+            // Drone rotation and movement
+            droneGroup.rotation.y += 0.02; // Rotate around Y-axis
+            droneGroup.rotation.x += 0.01; // Tilt effect
+            droneGroup.position.x = 50 + Math.sin(Date.now() * 0.001) * 20; // Slight horizontal movement
+            droneGroup.position.y = 50 + Math.cos(Date.now() * 0.001) * 10; // Slight vertical movement
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        });
+
+        // Modal Functionality
+        const modal = document.getElementById('booking-modal');
+        const bookNowBtn = document.getElementById('book-now');
+        const closeModal = document.getElementById('close-modal');
+
+        bookNowBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
